@@ -7,7 +7,8 @@
       Paths)
     (java.util
       Base64
-      Base64$Decoder)))
+      Base64$Decoder)
+    (com.google.cloud.tools.jib.api RelativeUnixPath AbsoluteUnixPath)))
 
 
 (set! *warn-on-reflection* true)
@@ -18,6 +19,13 @@
   (Paths/get (first more)
              (into-array String (rest more))))
 
+(defn relative-unix-path
+  [path]
+  (RelativeUnixPath/get path))
+
+(defn absolute-unix-path
+  [path]
+  (AbsoluteUnixPath/get path))
 
 (defn base64-decode
   ([encoded] (base64-decode encoded nil))

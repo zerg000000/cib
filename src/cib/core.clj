@@ -105,13 +105,13 @@
     app-root
     (.setAppRoot ^String app-root)
     classes-destination
-    (.setClassesDestination (util/path classes-destination))
+    (.setClassesDestination (util/relative-unix-path classes-destination))
     resources-destination
-    (.setResourcesDestination (util/path resources-destination))
+    (.setResourcesDestination (util/relative-unix-path resources-destination))
     dependencies-destination
-    (.setDependenciesDestination (util/path dependencies-destination))
+    (.setDependenciesDestination (util/relative-unix-path dependencies-destination))
     others-destination
-    (.setOthersDestination (util/path others-destination))
+    (.setOthersDestination (util/relative-unix-path others-destination))
     true
     (-> (.toContainerBuilder) (container config))))
 
