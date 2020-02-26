@@ -4,10 +4,11 @@
     [cib.util :as util])
   (:import
     (com.google.cloud.tools.jib.api
+      ImageFormat
       JavaContainerBuilder
       Jib
       JibContainerBuilder
-      Port ImageFormat)
+      Port)
     (java.util
       List
       Map
@@ -21,6 +22,24 @@
   [^JibContainerBuilder container layers]
   (doseq [{:keys [files path-in-container]} layers]
     (.addLayer container ^List files ^String path-in-container)))
+
+
+(defn ^JavaContainerBuilder add-classes
+  [^JavaContainerBuilder container classes]
+  (if (vector? classes)
+    (let [[path regex-str] classes
+          regex (re-pattern regex-str)]
+      (.addClasses container (util/path path) (util/as-pred #(re-find regex (str %)))))
+    (.addClasses container (util/path classes))))
+
+
+(defn ^JavaContainerBuilder add-resources
+  [^JavaContainerBuilder container resources]
+  (if (vector? resources)
+    (let [[path regex-str] resources
+          regex (re-pattern regex-str)]
+      (.addResources container (util/path path) (util/as-pred #(re-find regex (str %)))))
+    (.addResources container (util/path resources))))
 
 
 (defn to-port
@@ -43,30 +62,30 @@
             volumes
             format]}]
    (cond-> container-builder
-           layers
-           (add-layers layers)
-           user
-           (.setUser user)
-           working-directory
-           (.setWorkingDirectory working-directory)
-           entrypoint
-           (.setEntrypoint ^List entrypoint)
-           program-arguments
-           (.setProgramArguments ^List program-arguments)
-           environment
-           (.setEnvironment ^Map environment)
-           exposed-ports
-           (.setExposedPorts (->> exposed-ports
-                                  (map to-port)
-                                  ^Set (set)))
-           labels
-           (.setLabels ^Map labels)
-           volumes
-           (.setVolumes ^Set volumes)
-           format
-           (.setFormat (if (= format :oci)
-                         ImageFormat/OCI
-                         ImageFormat/Docker)))))
+     layers
+     (add-layers layers)
+     user
+     (.setUser user)
+     working-directory
+     (.setWorkingDirectory working-directory)
+     entrypoint
+     (.setEntrypoint ^List entrypoint)
+     program-arguments
+     (.setProgramArguments ^List program-arguments)
+     environment
+     (.setEnvironment ^Map environment)
+     exposed-ports
+     (.setExposedPorts (->> exposed-ports
+                            (map to-port)
+                            ^Set (set)))
+     labels
+     (.setLabels ^Map labels)
+     volumes
+     (.setVolumes ^Set volumes)
+     format
+     (.setFormat (if (= format :oci)
+                   ImageFormat/OCI
+                   ImageFormat/Docker)))))
 
 
 (defn java-container
@@ -93,9 +112,9 @@
     project-dependencies
     (.addProjectDependencies ^List (map util/path project-dependencies))
     classes
-    (.addClasses (util/path classes))
+    (add-classes classes)
     resources
-    (.addResources (util/path resources))
+    (add-resources resources)
     classpath
     (.addToClasspath ^List (apply util/path classpath))
     jvm-flags

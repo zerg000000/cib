@@ -1,5 +1,8 @@
 (ns cib.util
   (:import
+    (com.google.cloud.tools.jib.api
+      AbsoluteUnixPath
+      RelativeUnixPath)
     (java.nio
       ByteBuffer)
     (java.nio.file
@@ -8,7 +11,8 @@
     (java.util
       Base64
       Base64$Decoder)
-    (com.google.cloud.tools.jib.api RelativeUnixPath AbsoluteUnixPath)))
+    (java.util.function
+      Predicate)))
 
 
 (set! *warn-on-reflection* true)
@@ -19,13 +23,24 @@
   (Paths/get (first more)
              (into-array String (rest more))))
 
+
+(defn ^Predicate as-pred
+  [pred]
+  (reify Predicate
+    (test
+      [_ v]
+      (boolean (pred v)))))
+
+
 (defn relative-unix-path
   [path]
   (RelativeUnixPath/get path))
 
+
 (defn absolute-unix-path
   [path]
   (AbsoluteUnixPath/get path))
+
 
 (defn base64-decode
   ([encoded] (base64-decode encoded nil))

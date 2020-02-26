@@ -23,6 +23,10 @@
          directory?))
 
 
+(s/def :java.file/dir-with-filter
+  (s/tuple :java.file/dir string?))
+
+
 (s/def :java.file/file
   (s/and string?
          file-exist?))
@@ -40,8 +44,16 @@
   (s/+ :java.file/dir))
 
 
-(s/def :jib.java/classes :java.file/dir)
-(s/def :jib.java/resources :java.file/dir)
+(s/def :jib.java/classes
+  (s/or :dir :java.file/dir
+        :with-filter :java.file/dir-with-filter))
+
+
+(s/def :jib.java/resources
+  (s/or :dir :java.file/dir
+        :with-filter :java.file/dir-with-filter))
+
+
 (s/def :jib.java/classpath :java.file/dir)
 
 
@@ -76,8 +88,8 @@
 
 
 (s/def :jib.layer/files
-  (s/or :dir :java.file/dir
-        :file :java.file/file))
+  (s/alt :dir :java.file/dir
+         :file :java.file/file))
 
 
 (s/def :jib.layer/path-in-container
