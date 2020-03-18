@@ -51,7 +51,7 @@
   "Wrapper for JibContainerBuilder"
   ([config] (container (Jib/from ^String (:jib/from config)) config))
   ([^JibContainerBuilder container-builder
-    {:keys [layers
+    {:jib/keys [layers
             user
             working-directory
             entrypoint
