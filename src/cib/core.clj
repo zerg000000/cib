@@ -116,7 +116,7 @@
     resources
     (add-resources resources)
     classpath
-    (.addToClasspath ^List (mapv #(apply util/path %) classpath)
+    (.addToClasspath ^List (mapv #(apply util/path %) classpath))
     jvm-flags
     (.addJvmFlags ^List jvm-flags)
     main-class
