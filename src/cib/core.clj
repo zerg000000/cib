@@ -120,7 +120,7 @@
     jvm-flags
     (.addJvmFlags ^List jvm-flags)
     main-class
-    (.setMainClass (str main-class))
+    (.setMainClass (name main-class))
     app-root
     (.setAppRoot ^String app-root)
     classes-destination
