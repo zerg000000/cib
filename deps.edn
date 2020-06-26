@@ -1,6 +1,6 @@
 {:paths ["src"]
  :deps {org.clojure/clojure {:mvn/version "1.10.1"}
-        com.google.cloud.tools/jib-core {:mvn/version "2.4.0"}
+        com.google.cloud.tools/jib-core {:mvn/version "0.15.0"}
         com.fasterxml.jackson.core/jackson-databind {:mvn/version "2.10.2"}}
  :aliases {:ecr
            {:extra-deps {com.cognitect.aws/api       {:mvn/version "0.8.408"}
