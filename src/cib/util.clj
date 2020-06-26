@@ -1,6 +1,6 @@
 (ns cib.util
   (:import
-    (com.google.cloud.tools.jib.api
+    (com.google.cloud.tools.jib.api.buildplan
       AbsoluteUnixPath
       RelativeUnixPath)
     (java.nio
