@@ -3,7 +3,7 @@
     [cib.images :as images]
     [cib.util :as util])
   (:import
-    (com.google.cloud.tools.jib.api
+    (com.google.cloud.tools.jib.api.buildplan
       ImageFormat
       JavaContainerBuilder
       Jib
