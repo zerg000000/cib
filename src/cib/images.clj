@@ -45,8 +45,8 @@
 
 
 (defn oauth-refresh-token
-  [^String token]
   "Return Oauth 2 Refresh Token Credential for Registry"
+  [^String token]
   (reify CredentialRetriever
     (retrieve
       [_]
