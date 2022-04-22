@@ -3,13 +3,13 @@
     [cib.images :as images]
     [cib.util :as util])
   (:import
-    (com.google.cloud.tools.jib.api.buildplan
-      ImageFormat
-      Port)
     (com.google.cloud.tools.jib.api
       JavaContainerBuilder
       Jib
       JibContainerBuilder)
+    (com.google.cloud.tools.jib.api.buildplan
+      ImageFormat
+      Port)
     (java.util
       List
       Map
@@ -53,15 +53,15 @@
   ([config] (container (Jib/from ^String (:jib/from config)) config))
   ([^JibContainerBuilder container-builder
     {:jib/keys [layers
-            user
-            working-directory
-            entrypoint
-            program-arguments
-            environment
-            exposed-ports
-            labels
-            volumes
-            format]}]
+                user
+                working-directory
+                entrypoint
+                program-arguments
+                environment
+                exposed-ports
+                labels
+                volumes
+                format]}]
    (cond-> container-builder
      layers
      (add-layers layers)

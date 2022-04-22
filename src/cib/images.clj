@@ -62,18 +62,20 @@
       [_]
       (let [ecr ((ns-resolve (symbol "cognitect.aws.client.api") (symbol "client"))
                  {:api :ecr})
-            token-info (->> ((ns-resolve (symbol "cognitect.aws.client.api") (symbol "invoke"))
-                             ecr (cond-> {:op :GetAuthorizationToken}
-                                   (seq registryIds)
-                                   (assoc :request {:registryIds registryIds})))
+            result ((ns-resolve (symbol "cognitect.aws.client.api") (symbol "invoke"))
+                    ecr (cond-> {:op :GetAuthorizationToken}
+                          (seq registryIds)
+                          (assoc :request {:registryIds registryIds})))
+            token-info (->> result
                             :authorizationData
                             first)
 
-            token (-> token-info
-                      :authorizationToken
-                      ^bytes (util/base64-decode)
-                      (String.)
-                      (subs 4))]
+            token (some-> token-info
+                          :authorizationToken
+                          ^bytes (util/base64-decode)
+                          (String.)
+                          (subs 4))]
+        (assert token-info (str "ECR Authorization Token Cannot be obtained " result))
         (Optional/of (Credential/from "AWS" token))))))
 
 
