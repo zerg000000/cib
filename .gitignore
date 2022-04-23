@@ -9,7 +9,7 @@ pom.xml.asc
 *.class
 /lib/
 /classes/
-/target/
+**/target/
 /checkouts/
 .lein-deps-sum
 .lein-repl-history
@@ -19,6 +19,8 @@ pom.xml.asc
 .nrepl-history
 .cpcache/
 .clj-kondo/.cache/
+.lsp/
+.portal/
 
 ### Intellij+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
