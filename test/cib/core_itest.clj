@@ -91,19 +91,5 @@
       (Thread/sleep 5000)
       (is (= "OK" (slurp (str "http://" host ":" port)))
           "built image is runnable")
-      (tc/stop! container)))
-  #_(testing "multi-arch build"
-      (-> (cib/java-container (assoc image-spec
-                                :jib/platforms #{[:amd64 :linux] [:arm64 :linux]}
-                                :jib/format :oci))
-          (cib/containerize (images/tar {:at "test.tar" :image-ref image-ref})))
-      (let [container (-> (tc/create {:image-name image-ref
-                                      :exposed-ports [8090]})
-                          (tc/start!))
-            host (:host container)
-            port (get-in container [:mapped-ports 8090])]
-        (Thread/sleep 5000)
-        (is (= "OK" (slurp (str "http://" host ":" port)))
-            "built image is runnable")
-        (tc/stop! container))))
+      (tc/stop! container))))
 
