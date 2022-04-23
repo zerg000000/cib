@@ -1,0 +1,35 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Prepare Java
+        uses: actions/setup-java@v3.0.0
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Prepare Clojure CLI
+        uses: DeLaGuardo/setup-clojure@master
+        with:
+          cli: latest
+
+      - name: Apply Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.m2/repository
+          key: "cib-${{ hashFiles('**/deps.edn') }}"
+          restore-keys: "cib-"
+
+      - name: Build Test Project
+        working-directory: ./test-project/
+        run: bin/build
+      - name: Run tests
+        run: bin/kaocha
