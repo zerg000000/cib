@@ -176,5 +176,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+test.tar
 
 # End of https://www.gitignore.io/api/linux,macos,clojure,windows,intellij+all

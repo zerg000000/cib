@@ -127,6 +127,15 @@
 (s/def :jib/format #{:oci :docker})
 
 
+;; https://github.com/docker-library/official-images#architectures-other-than-amd64
+(s/def :jib.platform/architecture #{:arm64 :amd64})
+
+(s/def :jib.platform/os #{:linux})
+
+(s/def :jib/platform (s/tuple :jib.platform/architecture :jib.platform/os))
+
+(s/def :jib/platforms (s/+ :jib/platform))
+
 (s/def :jib.container/base
   (s/keys
     :req [:jib/from]
@@ -139,4 +148,5 @@
           :jib/exposed-ports
           :jib/labels
           :jib/volumes
-          :jib/format]))
+          :jib/format
+          :jib/platforms]))

@@ -1,8 +1,11 @@
 (ns test-project.main
   (:gen-class)
-  (:require [org.httpkit.server :as s]))
+  (:require
+    [org.httpkit.server :as s]))
 
-(defn -main [& args]
+
+(defn -main
+  [& args]
   (s/run-server (fn [_]
                   {:status 200
                    :body "OK"})

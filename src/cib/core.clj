@@ -9,7 +9,7 @@
       JibContainerBuilder)
     (com.google.cloud.tools.jib.api.buildplan
       ImageFormat
-      Port)
+      Port Platform)
     (java.util
       List
       Map
@@ -19,14 +19,14 @@
 (set! *warn-on-reflection* true)
 
 
-(defn ^JibContainerBuilder add-layers
-  [^JibContainerBuilder container layers]
+(defn add-layers
+  ^JibContainerBuilder [^JibContainerBuilder container layers]
   (doseq [{:keys [files path-in-container]} layers]
     (.addLayer container ^List files ^String path-in-container)))
 
 
-(defn ^JavaContainerBuilder add-classes
-  [^JavaContainerBuilder container classes]
+(defn add-classes
+  ^JavaContainerBuilder [^JavaContainerBuilder container classes]
   (if (vector? classes)
     (let [[path regex-str] classes
           regex (re-pattern regex-str)]
@@ -34,8 +34,8 @@
     (.addClasses container (util/path classes))))
 
 
-(defn ^JavaContainerBuilder add-resources
-  [^JavaContainerBuilder container resources]
+(defn add-resources
+  ^JavaContainerBuilder [^JavaContainerBuilder container resources]
   (if (vector? resources)
     (let [[path regex-str] resources
           regex (re-pattern regex-str)]
@@ -44,8 +44,13 @@
 
 
 (defn to-port
-  [[protocol port]]
+  ^Port [[protocol port]]
   (Port/parseProtocol port (name protocol)))
+
+
+(defn to-platform
+  ^Platform [[arch os]]
+  (Platform. (name arch) (name os)))
 
 
 (defn container
@@ -61,7 +66,8 @@
                 exposed-ports
                 labels
                 volumes
-                format]}]
+                format
+                platforms]}]
    (cond-> container-builder
      layers
      (add-layers layers)
@@ -83,6 +89,10 @@
      (.setLabels ^Map labels)
      volumes
      (.setVolumes ^Set volumes)
+     platforms
+     (.setPlatforms (->> platforms
+                         (map to-platform)
+                         ^Set (set)))
      format
      (.setFormat (if (= format :oci)
                    ImageFormat/OCI
