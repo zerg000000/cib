@@ -68,18 +68,18 @@
       (is (= "OK" (slurp (str "http://" host ":" port)))
           "built image is runnable")
       (tc/stop! container)))
-  (testing "arm64 build"
-    (-> (cib/java-container (assoc image-spec :jib/platforms #{[:arm64 :linux]}))
-        (cib/containerize (images/daemon image-ref)))
-    (let [container (-> (tc/create {:image-name image-ref
-                                    :exposed-ports [8090]})
-                        (tc/start!))
-          host (:host container)
-          port (get-in container [:mapped-ports 8090])]
-      (Thread/sleep 5000)
-      (is (= "OK" (slurp (str "http://" host ":" port)))
-          "built image is runnable")
-      (tc/stop! container)))
+  #_(testing "arm64 build"
+      (-> (cib/java-container (assoc image-spec :jib/platforms #{[:arm64 :linux]}))
+          (cib/containerize (images/daemon image-ref)))
+      (let [container (-> (tc/create {:image-name image-ref
+                                      :exposed-ports [8090]})
+                          (tc/start!))
+            host (:host container)
+            port (get-in container [:mapped-ports 8090])]
+        (Thread/sleep 5000)
+        (is (= "OK" (slurp (str "http://" host ":" port)))
+            "built image is runnable")
+        (tc/stop! container)))
   (testing "amd64 build"
     (-> (cib/java-container (assoc image-spec :jib/platforms #{[:amd64 :linux]}))
         (cib/containerize (images/daemon image-ref)))
