@@ -49,7 +49,7 @@ Just make a small change in config. Done!
            :jib/exposed-ports [[:tcp 3000]]
            :dependencies ["target/web-standalone.jar"]
            :main-class 'app.main
-           :platforms #{[:arm64 :linux]}
+           :jib/platforms #{[:arm64 :linux]}
            :jvm-flags ["-Xmx512m" "-Xms256m"]}
 ```
 

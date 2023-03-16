@@ -18,14 +18,14 @@
 (set! *warn-on-reflection* true)
 
 
-(defn ^Path path
-  [& more]
+(defn path
+  ^Path [& more]
   (Paths/get (first more)
              (into-array String (rest more))))
 
 
-(defn ^Predicate as-pred
-  [pred]
+(defn as-pred
+  ^Predicate [pred]
   (reify Predicate
     (test
       [_ v]
